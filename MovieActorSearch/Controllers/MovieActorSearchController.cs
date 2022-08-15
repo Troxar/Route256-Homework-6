@@ -58,7 +58,7 @@ public class MovieActorSearchController: ControllerBase
                 var res2 = await m2.Content.ReadAsStringAsync();
                 var movs2 = JsonConvert.DeserializeObject<ActorData>(res2).CastMovies;
 
-                // MoviesOnly
+                // todo: Поиск только по фильмам MoviesOnly
                 //if (request.MoviesOnly == true)
                 //{
                 //    movs1 = movs1.Where(m => m.Role == "Actress" || m.Role == "Actor").ToArray();
