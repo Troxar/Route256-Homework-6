@@ -22,8 +22,7 @@ public class MovieActorSearchController: ControllerBase
         {
             var result = new List<string>();
 
-            // TODO - зарегистрировать свой API key
-            var key = "";
+            var key = _connectionsConfigOptions.ImdbApiKey;
 
             var cs = _connectionsConfigOptions.DatabaseConnectionString;
             
