@@ -1,4 +1,5 @@
 using MovieActorSearch;
+using MovieActorSearch.Application;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,6 +9,7 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddScoped<IMovieActorSearchService, MovieActorSearchService>();
 builder.Services.AddOptions<ConnectionConfigOptions>().BindConfiguration(nameof(ConnectionConfigOptions));
 
 var app = builder.Build();
