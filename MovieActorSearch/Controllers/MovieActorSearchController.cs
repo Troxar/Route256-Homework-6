@@ -1,5 +1,6 @@
 using Dapper;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Npgsql;
 
@@ -9,6 +10,13 @@ namespace MovieActorSearch.Controllers;
 [Route("[controller]")]
 public class MovieActorSearchController: ControllerBase
     {
+        private readonly ConnectionConfigOptions _connectionsConfigOptions;
+
+        public MovieActorSearchController([FromServices]IOptions<ConnectionConfigOptions> connectionsConfigOptions)
+        {
+            _connectionsConfigOptions = connectionsConfigOptions.Value;
+        }
+        
         [HttpPost]
         public async Task<IEnumerable<string>> Post(MatchActorsRequest request)
         {
@@ -17,7 +25,7 @@ public class MovieActorSearchController: ControllerBase
             // TODO - зарегистрировать свой API key
             var key = "";
 
-            var cs = @"Server=127.0.0.1:5432;Database=actorsdb;User ID=postgres;Password=qwerty";
+            var cs = _connectionsConfigOptions.DatabaseConnectionString;
             
             using var con = new NpgsqlConnection(cs);
             
