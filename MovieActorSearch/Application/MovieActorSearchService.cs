@@ -1,5 +1,6 @@
 ﻿using Dapper;
 using Microsoft.Extensions.Options;
+using MovieActorSearch.Domain;
 using Newtonsoft.Json;
 using Npgsql;
 

@@ -1,4 +1,6 @@
-﻿namespace MovieActorSearch;
+﻿using MovieActorSearch.Domain;
+
+namespace MovieActorSearch.Application;
 
 public sealed record MovieActors
 {
