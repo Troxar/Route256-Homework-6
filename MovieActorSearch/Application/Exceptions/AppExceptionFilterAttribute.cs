@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
@@ -10,6 +11,10 @@ internal sealed class AppExceptionFilterAttribute : ExceptionFilterAttribute
     {
         switch (context.Exception)
         {
+            case ValidationException ex:
+                HandleEx(context, ex.Message, HttpStatusCode.BadRequest);
+                return;
+            
             case ActorNotFoundException ex:
                 HandleEx(context, ex.Message, HttpStatusCode.BadRequest);
                 return;

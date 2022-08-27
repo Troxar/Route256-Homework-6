@@ -1,4 +1,5 @@
 using MovieActorSearch.Application;
+using MovieActorSearch.Controllers;
 using MovieActorSearch.Infrastructure.ApiProvider;
 using MovieActorSearch.Infrastructure.DbProvider;
 using MovieActorSearch.Options;
@@ -14,6 +15,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IMovieActorSearchService, MovieActorSearchService>();
 builder.Services.AddTransient<IDbProvider, PostgresDbProvider>();
 builder.Services.AddTransient<IApiProvider, HttpClientApiProvider>();
+builder.Services.AddTransient<MovieActorSearchRequestValidator>();
 builder.Services.AddOptions<DbOptions>().BindConfiguration(nameof(DbOptions));
 builder.Services.AddOptions<ImdbOptions>().BindConfiguration(nameof(ImdbOptions));
 
