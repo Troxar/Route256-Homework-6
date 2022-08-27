@@ -2,5 +2,5 @@
 
 public interface IMovieActorSearchService
 {
-    Task<MatchResult> MatchActors(MatchRequest request, CancellationToken ct);
+    Task<MatchResponse> MatchActors(MatchRequest request, CancellationToken ct);
 }

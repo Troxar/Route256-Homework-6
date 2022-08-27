@@ -16,7 +16,7 @@ public class MovieActorSearchService : IMovieActorSearchService
         _apiProvider = apiProvider;
     }
     
-    public async Task<MatchResult> MatchActors(MatchRequest request, CancellationToken ct)
+    public async Task<MatchResponse> MatchActors(MatchRequest request, CancellationToken ct)
     {
         var movies1 = await GetActorMovies(request.Actor1, ct);
         var movies2 = await GetActorMovies(request.Actor2, ct);
@@ -32,13 +32,12 @@ public class MovieActorSearchService : IMovieActorSearchService
             .Select(x => x.Title)
             .OrderBy(x => x);
         
-        return await Task.FromResult(new MatchResult { Movies = result });
+        return await Task.FromResult(new MatchResponse(result));
     }
 
     private async Task<Movie[]> GetActorMovies(string actorName, CancellationToken ct)
     {
         var actor = await GetActor(actorName, ct);
-        
         var movies = await _apiProvider.FindActorMovies(actor.Id, ct);
         
         return movies is null ? Array.Empty<Movie>() : movies.CastMovies;
@@ -46,14 +45,10 @@ public class MovieActorSearchService : IMovieActorSearchService
     
     private async Task<Actor> GetActor(string name, CancellationToken ct)
     {
-        var actor = await _dbProvider.FindActor(name, ct);
-        
-        if (actor is null)
-            actor = await _apiProvider.FindActor(name, ct);
-
+        var actor = await _dbProvider.FindActor(name, ct) ?? await _apiProvider.FindActor(name, ct);
         if (actor is null)
             throw new ActorNotFoundException($"Actor not found: {name}");
-
+        
         return actor;
     }
 }
