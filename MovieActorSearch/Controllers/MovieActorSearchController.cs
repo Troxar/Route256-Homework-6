@@ -1,10 +1,12 @@
 using Microsoft.AspNetCore.Mvc;
 using MovieActorSearch.Application;
+using MovieActorSearch.Application.Exceptions;
 
 namespace MovieActorSearch.Controllers;
 
 [ApiController]
 [Route("[controller]")]
+[AppExceptionFilter]
 public class MovieActorSearchController: ControllerBase
 {
     private readonly IMovieActorSearchService _searchService;
@@ -26,8 +28,6 @@ public class MovieActorSearchController: ControllerBase
             MoviesOnly = request.MoviesOnly
         }, ct);
 
-        // todo: handle exceptions
-        
-        return result is null ? Array.Empty<string>() : result.Movies;
+        return result.Movies;
     }
 }
