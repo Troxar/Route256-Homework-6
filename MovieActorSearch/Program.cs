@@ -1,5 +1,6 @@
-using MovieActorSearch;
 using MovieActorSearch.Application;
+using MovieActorSearch.Infrastructure;
+using MovieActorSearch.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,7 +11,9 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IMovieActorSearchService, MovieActorSearchService>();
-builder.Services.AddOptions<ConnectionConfigOptions>().BindConfiguration(nameof(ConnectionConfigOptions));
+builder.Services.AddTransient<IDbProvider, PostgresDbProvider>();
+builder.Services.AddOptions<DbOptions>().BindConfiguration(nameof(DbOptions));
+builder.Services.AddOptions<ImdbOptions>().BindConfiguration(nameof(ImdbOptions));
 
 var app = builder.Build();
 

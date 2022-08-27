@@ -1,61 +1,57 @@
-﻿using Dapper;
-using Microsoft.Extensions.Options;
+﻿using Microsoft.Extensions.Options;
 using MovieActorSearch.Domain;
+using MovieActorSearch.Infrastructure.DbProvider;
+using MovieActorSearch.Options;
 using Newtonsoft.Json;
-using Npgsql;
 
 namespace MovieActorSearch.Application;
 
 public class MovieActorSearchService : IMovieActorSearchService
 {
-    private readonly ConnectionConfigOptions _connectionsConfigOptions;
+    private readonly IDbProvider _dbProvider;
+    private readonly ImdbOptions _options;
 
-    public MovieActorSearchService(IOptions<ConnectionConfigOptions> connectionsConfigOptions)
+    public MovieActorSearchService(IDbProvider dbProvider, IOptions<ImdbOptions> options)
     {
-        _connectionsConfigOptions = connectionsConfigOptions.Value;
+        _dbProvider = dbProvider;
+        _options = options.Value;
     }
     
     public async Task<MatchResult> MatchActors(MatchRequest request, CancellationToken ct)
     {
         var result = new List<string>();
-        
-        await using var connection = new NpgsqlConnection(_connectionsConfigOptions.DatabaseConnectionString);
-        await connection.OpenAsync(ct);
-        
-        var queryActor1 = "select actor_id from actors where name='" + request.Actor1 + "';";
-        var queryActor2 = "select actor_id from actors where name='" + request.Actor2 + "';";
 
-        string actor1_id = connection.ExecuteScalar<string>(queryActor1);
-        string actor2_id = connection.ExecuteScalar<string>(queryActor2);
-
+        var actor1 = await _dbProvider.FindActor(request.Actor1, ct);
+        var actor2 = await _dbProvider.FindActor(request.Actor2, ct);
+        
         using var client = new HttpClient();
-        var key = _connectionsConfigOptions.ImdbApiKey;
+        var key = _options.Key;
 
-        if (actor1_id == null)
+        if (actor1 is null)
         {
             var response1 = await client.GetAsync("https://imdb-api.com/en/API/SearchName/" + key + "/"+ request.Actor1, ct);
             var result1 = await response1.Content.ReadAsStringAsync(ct);
             var actors1 = JsonConvert.DeserializeObject<MovieActors>(result1);
 
-            actor1_id = actors1.Results.FirstOrDefault(t => request.Actor1 == t.Title)?.Id;
+            actor1 = actors1.Results.FirstOrDefault(t => request.Actor1 == t.Title);
         }
 
-        if (actor2_id == null)
+        if (actor2 is null)
         {
             var response2 = await client.GetAsync("https://imdb-api.com/en/API/SearchName/" + key + "/" + request.Actor2);
             var result2 = await response2.Content.ReadAsStringAsync(ct);
             var actors2 = JsonConvert.DeserializeObject<MovieActors>(result2);
 
-            actor2_id = actors2.Results.FirstOrDefault(t => request.Actor2 == t.Title)?.Id;
+            actor2 = actors2.Results.FirstOrDefault(t => request.Actor2 == t.Title);
         }
 
-        if (actor1_id != null && actor2_id != null)
+        if (actor1 is not null && actor2 is not null)
         {
-            var response1 = await client.GetAsync("https://imdb-api.com/en/API/Name/" + key + "/" + actor1_id, ct);
+            var response1 = await client.GetAsync("https://imdb-api.com/en/API/Name/" + key + "/" + actor1.Id, ct);
             var result1 = await response1.Content.ReadAsStringAsync(ct);
             var movies1 = JsonConvert.DeserializeObject<ActorMovies>(result1).CastMovies;
 
-            var response2 = await client.GetAsync("https://imdb-api.com/en/API/Name/" + key + "/" + actor2_id, ct);
+            var response2 = await client.GetAsync("https://imdb-api.com/en/API/Name/" + key + "/" + actor2.Id, ct);
             var result2 = await response2.Content.ReadAsStringAsync(ct);
             var movies2 = JsonConvert.DeserializeObject<ActorMovies>(result2).CastMovies;
 
