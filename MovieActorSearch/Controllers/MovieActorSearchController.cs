@@ -26,6 +26,8 @@ public class MovieActorSearchController: ControllerBase
             MoviesOnly = request.MoviesOnly
         }, ct);
 
-        return result.Movies;
+        // todo: handle exceptions
+        
+        return result is null ? Array.Empty<string>() : result.Movies;
     }
 }

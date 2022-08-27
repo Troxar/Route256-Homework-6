@@ -4,5 +4,5 @@ namespace MovieActorSearch.Application;
 
 public sealed record MovieActors
 {
-    public Actor[] Results { get; set; } = Array.Empty<Actor>();
+    public Actor[] Results { get; init; } = Array.Empty<Actor>();
 }
