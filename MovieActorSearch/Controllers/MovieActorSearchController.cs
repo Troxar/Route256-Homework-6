@@ -17,17 +17,16 @@ public class MovieActorSearchController: ControllerBase
     }
     
     [HttpPost]
-    public async Task<IEnumerable<string>> Post(MovieActorSearchRequest request, CancellationToken ct)
+    public async Task<MovieActorSearchResponse> MatchActors(MovieActorSearchRequest request, CancellationToken ct)
     {
         // todo: request validation
 
-        var result = await _searchService.MatchActors(new MatchRequest
-        {
-            Actor1 = request.Actor1,
-            Actor2 = request.Actor2,
-            MoviesOnly = request.MoviesOnly
-        }, ct);
+        var result = await _searchService.MatchActors(new MatchRequest(
+            actor1: request.Actor1,
+            actor2: request.Actor2,
+            moviesOnly: request.MoviesOnly
+        ), ct);
 
-        return result.Movies;
+        return new MovieActorSearchResponse(result.Movies);
     }
 }

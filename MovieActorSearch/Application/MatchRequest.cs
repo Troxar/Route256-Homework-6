@@ -2,7 +2,14 @@
 
 public sealed class MatchRequest
 {
-    public string Actor1 { get; init; } = "";
-    public string Actor2 { get; init; } = "";
-    public bool MoviesOnly { get; init; }
+    public MatchRequest(string actor1, string actor2, bool moviesOnly)
+    {
+        Actor1 = actor1;
+        Actor2 = actor2;
+        MoviesOnly = moviesOnly;
+    }
+
+    public string Actor1 { get; }
+    public string Actor2 { get; }
+    public bool MoviesOnly { get; }
 }

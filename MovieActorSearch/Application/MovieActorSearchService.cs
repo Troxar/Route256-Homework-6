@@ -28,7 +28,7 @@ public class MovieActorSearchService : IMovieActorSearchService
         //    movs1 = movs1.Where(m => m.Role == "Actress" || m.Role == "Actor").ToArray();
         //}
 
-        var result = movies1.Intersect(movies2, new MovieComparer())
+        var result = Movie.Intersect(movies1, movies2)
             .Select(x => x.Title)
             .OrderBy(x => x);
         
