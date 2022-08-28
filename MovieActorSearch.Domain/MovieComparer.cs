@@ -1,6 +1,6 @@
 ﻿namespace MovieActorSearch.Domain;
 
-public class MovieComparer : IEqualityComparer<Movie>
+internal class MovieComparer : IEqualityComparer<Movie>
 {
     public bool Equals(Movie? x, Movie? y)
     {

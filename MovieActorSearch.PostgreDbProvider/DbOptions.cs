@@ -1,4 +1,4 @@
-﻿namespace MovieActorSearch.Options;
+﻿namespace MovieActorSearch.PostgreDbProvider;
 
 public sealed class DbOptions
 {

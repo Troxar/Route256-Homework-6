@@ -1,6 +1,6 @@
 ﻿using MovieActorSearch.Domain;
 
-namespace MovieActorSearch.Infrastructure.DbProvider;
+namespace MovieActorSearch.PostgreDbProvider;
 
 public interface IDbProvider
 {

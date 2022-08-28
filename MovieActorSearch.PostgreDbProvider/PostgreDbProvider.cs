@@ -1,16 +1,16 @@
-﻿using Microsoft.Extensions.Options;
+﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using MovieActorSearch.Domain;
-using MovieActorSearch.Options;
 using Npgsql;
 
-namespace MovieActorSearch.Infrastructure.DbProvider;
+namespace MovieActorSearch.PostgreDbProvider;
 
-public class PostgresDbProvider : IDbProvider
+public class PostgreDbProvider : IDbProvider
 {
     private readonly DbOptions _dbOptions;
-    private readonly ILogger<PostgresDbProvider> _logger;
+    private readonly ILogger<PostgreDbProvider> _logger;
 
-    public PostgresDbProvider(IOptions<DbOptions> dbOptions, ILogger<PostgresDbProvider> logger)
+    public PostgreDbProvider(IOptions<DbOptions> dbOptions, ILogger<PostgreDbProvider> logger)
     {
         _dbOptions = dbOptions.Value;
         _logger = logger;

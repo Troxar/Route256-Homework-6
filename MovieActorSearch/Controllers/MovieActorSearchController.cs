@@ -26,9 +26,9 @@ public class MovieActorSearchController: ControllerBase
         await _validator.ValidateAndThrowAsync(request, ct);
 
         var result = await _searchService.MatchActors(new MatchRequest(
-            actor1: request.Actor1,
-            actor2: request.Actor2,
-            moviesOnly: request.MoviesOnly
+            request.Actor1,
+            request.Actor2,
+            request.MoviesOnly
         ), ct);
 
         return new MovieActorSearchResponse(result.Movies);

@@ -1,4 +1,4 @@
-﻿namespace MovieActorSearch.Options;
+﻿namespace MovieActorSearch.HttpClientApiProvider;
 
 public sealed class ImdbOptions
 {

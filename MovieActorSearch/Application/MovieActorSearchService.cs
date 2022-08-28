@@ -1,7 +1,7 @@
 ﻿using MovieActorSearch.Application.Exceptions;
 using MovieActorSearch.Domain;
-using MovieActorSearch.Infrastructure.ApiProvider;
-using MovieActorSearch.Infrastructure.DbProvider;
+using MovieActorSearch.HttpClientApiProvider;
+using MovieActorSearch.PostgreDbProvider;
 
 namespace MovieActorSearch.Application;
 

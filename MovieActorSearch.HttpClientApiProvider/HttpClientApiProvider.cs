@@ -1,9 +1,8 @@
 ﻿using Microsoft.Extensions.Options;
 using MovieActorSearch.Domain;
-using MovieActorSearch.Options;
 using Newtonsoft.Json;
 
-namespace MovieActorSearch.Infrastructure.ApiProvider;
+namespace MovieActorSearch.HttpClientApiProvider;
 
 public class HttpClientApiProvider : IApiProvider
 {

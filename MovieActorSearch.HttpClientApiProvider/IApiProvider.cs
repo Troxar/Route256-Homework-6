@@ -1,6 +1,6 @@
 ﻿using MovieActorSearch.Domain;
 
-namespace MovieActorSearch.Infrastructure.ApiProvider;
+namespace MovieActorSearch.HttpClientApiProvider;
 
 public interface IApiProvider
 {
