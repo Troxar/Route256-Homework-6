@@ -19,8 +19,18 @@ public class MovieActorSearchService : IMovieActorSearchService
     public async Task<MatchResponse> MatchActors(MatchRequest request, CancellationToken ct)
     {
         var movies1 = await GetActorMovies(request.Actor1, ct);
-        var movies2 = await GetActorMovies(request.Actor2, ct);
-
+        
+        IEnumerable<Movie> commonMovies;
+        if (request.Actor1 == request.Actor2)
+        {
+            commonMovies = movies1;
+        }
+        else
+        {
+            var movies2 = await GetActorMovies(request.Actor2, ct);
+            commonMovies = Movie.Intersect(movies1, movies2);
+        }
+        
         // todo: search MoviesOnly
         //if (request.MoviesOnly == true)
         //{
@@ -28,11 +38,10 @@ public class MovieActorSearchService : IMovieActorSearchService
         //    movs1 = movs1.Where(m => m.Role == "Actress" || m.Role == "Actor").ToArray();
         //}
 
-        var result = Movie.Intersect(movies1, movies2)
-            .Select(x => x.Title)
+        var result = commonMovies.Select(x => x.Title)
             .OrderBy(x => x);
         
-        return await Task.FromResult(new MatchResponse(result));
+        return new MatchResponse(result);
     }
 
     private async Task<Movie[]> GetActorMovies(string actorName, CancellationToken ct)
