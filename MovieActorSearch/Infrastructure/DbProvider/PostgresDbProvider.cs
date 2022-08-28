@@ -1,5 +1,4 @@
-﻿using Dapper;
-using Microsoft.Extensions.Options;
+﻿using Microsoft.Extensions.Options;
 using MovieActorSearch.Domain;
 using MovieActorSearch.Options;
 using Npgsql;
@@ -21,12 +20,12 @@ public class PostgresDbProvider : IDbProvider
     {
         await using var connection = new NpgsqlConnection(_dbOptions.ConnectionString);
         await connection.OpenAsync(ct);
-        
-        // todo: prevent sql-injection
-        
-        var query = $"select imdb_id from actors where name='{name}';";
-        string id = connection.ExecuteScalar<string>(query);
 
+        var query = "select imdb_id from actors where name = @name";
+        await using var sqlCommand = new NpgsqlCommand(query, connection);
+        sqlCommand.Parameters.AddWithValue("name", name);
+        
+        var id = (string?)await sqlCommand.ExecuteScalarAsync(ct);
         if (id is null)
         {
             _logger.LogInformation("Actor not found: {name}", name);
@@ -42,8 +41,12 @@ public class PostgresDbProvider : IDbProvider
         await using var connection = new NpgsqlConnection(_dbOptions.ConnectionString);
         await connection.OpenAsync(ct);
         
-        var query = $"insert into actors (imdb_id, name) values ('{actor.Id}', '{actor.Title}');";
-        await connection.ExecuteAsync(query);
+        var query = "insert into actors (imdb_id, name) values (@id, @name)";
+        await using var sqlCommand = new NpgsqlCommand(query, connection);
+        sqlCommand.Parameters.AddWithValue("id", actor.Id);
+        sqlCommand.Parameters.AddWithValue("name", actor.Title);
+        
+        await sqlCommand.ExecuteNonQueryAsync(ct);
         
         _logger.LogInformation("Actor saved: [{id}] {name}", actor.Id, actor.Title);
     }
