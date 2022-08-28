@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.Options;
-using MovieActorSearch.Application;
 using MovieActorSearch.Domain;
 using MovieActorSearch.Options;
 using Newtonsoft.Json;

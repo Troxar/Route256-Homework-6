@@ -54,9 +54,15 @@ public class MovieActorSearchService : IMovieActorSearchService
     
     private async Task<Actor> GetActor(string name, CancellationToken ct)
     {
-        var actor = await _dbProvider.FindActor(name, ct) ?? await _apiProvider.FindActor(name, ct);
+        var actor = await _dbProvider.FindActor(name, ct);
+        if (actor is not null)
+            return actor;
+
+        actor = await _apiProvider.FindActor(name, ct);
         if (actor is null)
             throw new ActorNotFoundException($"Actor not found: {name}");
+        
+        await _dbProvider.SaveActor(actor, ct);
         
         return actor;
     }
