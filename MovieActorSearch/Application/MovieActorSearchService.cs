@@ -1,4 +1,5 @@
 ﻿using MovieActorSearch.Application.Exceptions;
+using MovieActorSearch.Application.Utils;
 using MovieActorSearch.Domain;
 using MovieActorSearch.HttpClientApiProvider;
 using MovieActorSearch.PostgreDbProvider;
@@ -31,7 +32,7 @@ public class MovieActorSearchService : IMovieActorSearchService
         else
         {
             var movies2 = await GetActorMovies(request.Actor2, request.MoviesOnly, ct);
-            commonMovies = Movie.Intersect(movies1, movies2);
+            commonMovies = MovieHelper.Intersect(movies1, movies2);
         }
         
         var result = commonMovies.Select(x => x.Title)

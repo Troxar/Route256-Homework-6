@@ -1,4 +1,6 @@
-﻿namespace MovieActorSearch.Domain;
+﻿using MovieActorSearch.Domain;
+
+namespace MovieActorSearch.Application.Utils;
 
 internal class MovieComparer : IEqualityComparer<Movie>
 {
