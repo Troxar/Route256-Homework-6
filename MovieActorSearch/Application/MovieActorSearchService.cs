@@ -1,8 +1,8 @@
-﻿using MovieActorSearch.Application.Exceptions;
-using MovieActorSearch.Application.Utils;
+﻿using MovieActorSearch.Application.Utils;
 using MovieActorSearch.Domain;
 using MovieActorSearch.HttpClientApiProvider;
 using MovieActorSearch.PostgreDbProvider;
+using MovieActorSearch.PostgreDbProvider.Exceptions;
 
 namespace MovieActorSearch.Application;
 
@@ -57,14 +57,16 @@ public class MovieActorSearchService : IMovieActorSearchService
     
     private async Task<Actor> GetActor(string name, CancellationToken ct)
     {
-        var actor = await _dbProvider.FindActor(name, ct);
-        if (actor is not null)
-            return actor;
+        Actor actor;
 
-        actor = await _apiProvider.FindActor(name, ct);
-        if (actor is null)
-            throw new ActorNotFoundException($"Actor not found: {name}");
-        
+        try
+        {
+            actor = await _dbProvider.FindActor(name, ct);
+            return actor;
+        }
+        catch (ActorNotFoundException) { }
+
+        actor = await _apiProvider.FindActor(name, ct);    
         await _dbProvider.SaveActor(actor, ct);
         
         return actor;

@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Options;
 using MovieActorSearch.Domain;
+using MovieActorSearch.HttpClientApiProvider.Exceptions;
 using Newtonsoft.Json;
 
 namespace MovieActorSearch.HttpClientApiProvider;
@@ -15,10 +16,10 @@ public class HttpClientApiProvider : IApiProvider
         _httpClient = httpClient;
     }
     
-    public async Task<Actor?> FindActor(string name, CancellationToken ct)
+    public async Task<Actor> FindActor(string name, CancellationToken ct)
     {
         var requestUri = $"{_imdbOptions.SearchNameUri}/{_imdbOptions.Key}/{name}";
-
+        
         HttpResponseMessage? response;
         
         try
@@ -36,7 +37,15 @@ public class HttpClientApiProvider : IApiProvider
         var result = await response.Content.ReadAsStringAsync(ct);
         var actors = JsonConvert.DeserializeObject<MovieActors>(result);
 
-        return actors?.Results.FirstOrDefault(t => name == t.Title);
+        if (actors is null)
+            throw new ActorNotFoundException($"Actor not found: {name}");
+        
+        var actor = actors.Results.FirstOrDefault(t => name == t.Title);
+        
+        if (actor is null)
+            throw new ActorNotFoundException($"Actor not found: {name}");
+
+        return actor;
     }
 
     public async Task<ActorMovies?> FindActorMovies(string id, CancellationToken ct)

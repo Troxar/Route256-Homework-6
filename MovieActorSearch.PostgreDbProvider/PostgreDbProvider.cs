@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using MovieActorSearch.Domain;
+using MovieActorSearch.PostgreDbProvider.Exceptions;
 using Npgsql;
 
 namespace MovieActorSearch.PostgreDbProvider;
@@ -28,7 +29,7 @@ public class PostgreDbProvider : IDbProvider
         if (await sqlCommand.ExecuteScalarAsync(ct) is not string id)
         {
             _logger.LogInformation("Actor not found: {name}", name);
-            return null;
+            throw new ActorNotFoundException($"Actor not found: {name}");
         }
         
         _logger.LogInformation("Actor found: {name}", name);
