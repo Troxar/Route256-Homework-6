@@ -1,7 +1,7 @@
-using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using MovieActorSearch.Application;
 using MovieActorSearch.Application.Exceptions;
+using MovieActorSearch.Controllers.Requests;
 
 namespace MovieActorSearch.Controllers;
 

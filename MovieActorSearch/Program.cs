@@ -1,7 +1,7 @@
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using MovieActorSearch.Application;
-using MovieActorSearch.Controllers;
+using MovieActorSearch.Controllers.Requests;
 using MovieActorSearch.HttpClientApiProvider;
 using MovieActorSearch.PostgreDbProvider;
 
