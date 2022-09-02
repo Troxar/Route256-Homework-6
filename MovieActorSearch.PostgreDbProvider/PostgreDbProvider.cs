@@ -24,9 +24,8 @@ public class PostgreDbProvider : IDbProvider
         var query = "select imdb_id from actors where name = @name";
         await using var sqlCommand = new NpgsqlCommand(query, connection);
         sqlCommand.Parameters.AddWithValue("name", name);
-        
-        var id = (string?)await sqlCommand.ExecuteScalarAsync(ct);
-        if (id is null)
+
+        if (await sqlCommand.ExecuteScalarAsync(ct) is not string id)
         {
             _logger.LogInformation("Actor not found: {name}", name);
             return null;
