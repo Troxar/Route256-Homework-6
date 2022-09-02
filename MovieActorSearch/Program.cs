@@ -1,3 +1,5 @@
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using MovieActorSearch.Application;
 using MovieActorSearch.Controllers;
 using MovieActorSearch.HttpClientApiProvider;
@@ -14,9 +16,11 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IMovieActorSearchService, MovieActorSearchService>();
 builder.Services.AddTransient<IDbProvider, PostgreDbProvider>();
 builder.Services.AddTransient<IApiProvider, HttpClientApiProvider>();
-builder.Services.AddTransient<MovieActorSearchRequestValidator>();
 builder.Services.AddOptions<DbOptions>().BindConfiguration(nameof(DbOptions));
 builder.Services.AddOptions<ImdbOptions>().BindConfiguration(nameof(ImdbOptions));
+
+builder.Services.AddFluentValidationAutoValidation();
+builder.Services.AddScoped<IValidator<MovieActorSearchRequest>, MovieActorSearchRequestValidator>();
 
 var app = builder.Build();
 

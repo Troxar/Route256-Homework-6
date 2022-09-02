@@ -11,20 +11,15 @@ namespace MovieActorSearch.Controllers;
 public class MovieActorSearchController: ControllerBase
 {
     private readonly IMovieActorSearchService _searchService;
-    private readonly MovieActorSearchRequestValidator _validator;
 
-    public MovieActorSearchController([FromServices]IMovieActorSearchService searchService, 
-        MovieActorSearchRequestValidator validator)
+    public MovieActorSearchController([FromServices]IMovieActorSearchService searchService)
     {
         _searchService = searchService;
-        _validator = validator;
     }
     
     [HttpPost]
     public async Task<MovieActorSearchResponse> MatchActors(MovieActorSearchRequest request, CancellationToken ct)
     {
-        await _validator.ValidateAndThrowAsync(request, ct);
-
         var result = await _searchService.MatchActors(new MatchRequest(
             request.Actor1,
             request.Actor2,
