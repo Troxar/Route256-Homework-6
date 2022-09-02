@@ -7,18 +7,18 @@ namespace MovieActorSearch.HttpClientApiProvider;
 public class HttpClientApiProvider : IApiProvider
 {
     private readonly ImdbOptions _imdbOptions;
+    private readonly HttpClient _httpClient;
 
-    public HttpClientApiProvider(IOptions<ImdbOptions> imdbOptions)
+    public HttpClientApiProvider(IOptions<ImdbOptions> imdbOptions, HttpClient httpClient)
     {
         _imdbOptions = imdbOptions.Value;
+        _httpClient = httpClient;
     }
     
     public async Task<Actor?> FindActor(string name, CancellationToken ct)
     {
-        using var client = new HttpClient();
-        
         var requestUri = $"{_imdbOptions.SearchNameUri}/{_imdbOptions.Key}/{name}";
-        var response = await client.GetAsync(requestUri, ct);
+        var response = await _httpClient.GetAsync(requestUri, ct);
         var result = await response.Content.ReadAsStringAsync(ct);
         var actors = JsonConvert.DeserializeObject<MovieActors>(result);
 
@@ -27,10 +27,8 @@ public class HttpClientApiProvider : IApiProvider
 
     public async Task<ActorMovies?> FindActorMovies(string id, CancellationToken ct)
     {
-        using var client = new HttpClient();
-        
         var requestUri = $"{_imdbOptions.SearchActorMoviesUri}/{_imdbOptions.Key}/{id}";
-        var response = await client.GetAsync(requestUri, ct);
+        var response = await _httpClient.GetAsync(requestUri, ct);
         var result = await response.Content.ReadAsStringAsync(ct);
         
         return JsonConvert.DeserializeObject<ActorMovies>(result);

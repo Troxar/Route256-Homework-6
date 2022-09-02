@@ -22,6 +22,8 @@ builder.Services.AddOptions<ImdbOptions>().BindConfiguration(nameof(ImdbOptions)
 builder.Services.AddFluentValidationAutoValidation();
 builder.Services.AddScoped<IValidator<MovieActorSearchRequest>, MovieActorSearchRequestValidator>();
 
+builder.Services.AddHttpClient<IApiProvider, HttpClientApiProvider>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
