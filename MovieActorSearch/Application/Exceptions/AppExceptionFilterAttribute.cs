@@ -19,10 +19,9 @@ internal sealed class AppExceptionFilterAttribute : ExceptionFilterAttribute
                 HandleEx(context, ex.Message, HttpStatusCode.BadRequest);
                 return;
             
-            case { }:
-                HandleEx(context, "Boom! Something went wrong", HttpStatusCode.InternalServerError);
+            case { } ex:
+                HandleEx(context, "Boom! " + ex.Message, HttpStatusCode.InternalServerError);
                 return;
-            
         }
         
         base.OnException(context);

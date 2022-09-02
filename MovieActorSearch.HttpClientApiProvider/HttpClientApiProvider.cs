@@ -18,7 +18,21 @@ public class HttpClientApiProvider : IApiProvider
     public async Task<Actor?> FindActor(string name, CancellationToken ct)
     {
         var requestUri = $"{_imdbOptions.SearchNameUri}/{_imdbOptions.Key}/{name}";
-        var response = await _httpClient.GetAsync(requestUri, ct);
+
+        HttpResponseMessage? response;
+        
+        try
+        {
+            response = await _httpClient.GetAsync(requestUri, ct);
+        }
+        catch (Exception ex)
+        {
+            throw new InvalidOperationException(ex.Message);
+        }
+
+        if (response is null)
+            throw new NullReferenceException("Null reference: " + nameof(response));
+        
         var result = await response.Content.ReadAsStringAsync(ct);
         var actors = JsonConvert.DeserializeObject<MovieActors>(result);
 
