@@ -1,4 +1,4 @@
-﻿namespace MovieActorSearch.HttpClientApiProvider.Exceptions;
+﻿namespace MovieActorSearch.Application.Exceptions;
 
 public class ActorNotFoundException : Exception
 {

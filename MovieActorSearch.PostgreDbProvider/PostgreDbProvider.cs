@@ -1,7 +1,8 @@
 ﻿using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using MovieActorSearch.Domain;
-using MovieActorSearch.PostgreDbProvider.Exceptions;
+using MovieActorSearch.Application.Abstractions;
+using MovieActorSearch.Application.Exceptions;
 using Npgsql;
 
 namespace MovieActorSearch.PostgreDbProvider;
@@ -17,7 +18,7 @@ public class PostgreDbProvider : IDbProvider
         _logger = logger;
     }
     
-    public async Task<Actor?> FindActor(string name, CancellationToken ct)
+    public async Task<Actor> FindActor(string name, CancellationToken ct)
     {
         await using var connection = new NpgsqlConnection(_dbOptions.ConnectionString);
         await connection.OpenAsync(ct);

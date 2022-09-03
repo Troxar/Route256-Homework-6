@@ -1,4 +1,6 @@
-﻿namespace MovieActorSearch.Application;
+﻿using MovieActorSearch.Application.Services;
+
+namespace MovieActorSearch.Application.Abstractions;
 
 public interface IMovieActorSearchService
 {

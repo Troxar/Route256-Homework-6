@@ -1,9 +1,11 @@
 using Microsoft.AspNetCore.Mvc;
-using MovieActorSearch.Application;
+using MovieActorSearch.Application.Abstractions;
 using MovieActorSearch.Application.Exceptions;
-using MovieActorSearch.Controllers.Requests;
+using MovieActorSearch.Application.Services;
+using MovieActorSearch.WebUI.Requests;
+using MovieActorSearch.WebUI.Responses;
 
-namespace MovieActorSearch.Controllers;
+namespace MovieActorSearch.WebUI.Controllers;
 
 [ApiController]
 [Route("[controller]")]

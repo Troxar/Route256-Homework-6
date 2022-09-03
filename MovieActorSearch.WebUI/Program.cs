@@ -1,9 +1,10 @@
 using FluentValidation;
 using FluentValidation.AspNetCore;
-using MovieActorSearch.Application;
-using MovieActorSearch.Controllers.Requests;
+using MovieActorSearch.Application.Abstractions;
+using MovieActorSearch.Application.Services;
 using MovieActorSearch.HttpClientApiProvider;
 using MovieActorSearch.PostgreDbProvider;
+using MovieActorSearch.WebUI.Requests;
 
 var builder = WebApplication.CreateBuilder(args);
 

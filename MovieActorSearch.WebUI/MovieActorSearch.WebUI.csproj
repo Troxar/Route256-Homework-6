@@ -5,6 +5,8 @@
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+        <AssemblyName>MovieActorSearch.WebUI</AssemblyName>
+        <RootNamespace>MovieActorSearch.WebUI</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>

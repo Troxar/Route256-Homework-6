@@ -1,10 +1,9 @@
 ﻿using MovieActorSearch.Application.Utils;
 using MovieActorSearch.Domain;
-using MovieActorSearch.HttpClientApiProvider;
-using MovieActorSearch.PostgreDbProvider;
-using MovieActorSearch.PostgreDbProvider.Exceptions;
+using MovieActorSearch.Application.Abstractions;
+using MovieActorSearch.Application.Exceptions;
 
-namespace MovieActorSearch.Application;
+namespace MovieActorSearch.Application.Services;
 
 public class MovieActorSearchService : IMovieActorSearchService
 {

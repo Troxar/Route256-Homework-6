@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Options;
 using MovieActorSearch.Domain;
-using MovieActorSearch.HttpClientApiProvider.Exceptions;
+using MovieActorSearch.Application.Abstractions;
+using MovieActorSearch.Application.Exceptions;
 using Newtonsoft.Json;
 
 namespace MovieActorSearch.HttpClientApiProvider;

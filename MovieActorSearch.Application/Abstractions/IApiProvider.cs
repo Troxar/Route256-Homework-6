@@ -1,6 +1,6 @@
 ﻿using MovieActorSearch.Domain;
 
-namespace MovieActorSearch.HttpClientApiProvider;
+namespace MovieActorSearch.Application.Abstractions;
 
 public interface IApiProvider
 {

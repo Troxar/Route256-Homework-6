@@ -2,11 +2,10 @@
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using MovieActorSearch.PostgreDbProvider.Exceptions;
 
 namespace MovieActorSearch.Application.Exceptions;
 
-internal sealed class AppExceptionFilterAttribute : ExceptionFilterAttribute
+public sealed class AppExceptionFilterAttribute : ExceptionFilterAttribute
 {
     public override void OnException(ExceptionContext context)
     {

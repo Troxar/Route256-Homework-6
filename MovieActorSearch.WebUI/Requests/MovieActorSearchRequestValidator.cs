@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace MovieActorSearch.Controllers.Requests;
+namespace MovieActorSearch.WebUI.Requests;
 
 public sealed class MovieActorSearchRequestValidator : AbstractValidator<MovieActorSearchRequest>
 {
